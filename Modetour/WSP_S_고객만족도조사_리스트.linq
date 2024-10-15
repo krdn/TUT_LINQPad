@@ -1,14 +1,17 @@
 <Query Kind="Program">
   <Connection>
-    <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
+    <ID>67d23f56-2e29-49e2-b6c9-b894cafe52c8</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>localhost, 1434</Server>
+    <Server>172.22.28.13, 1942</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
-    <Database>SalesSimple</Database>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAE0buaQVsAUedbdTc98/yCgAAAAACAAAAAAAQZgAAAAEAACAAAACoac+pmsPn970jdSiiDNXcmEq6ZYIh6dc3d9SyHnV7HQAAAAAOgAAAAAIAACAAAABuDawFrSg9JkJLuUDZTW/Qy1fNNZKlsl3M7jSChIKPwBAAAABi4nBNgwXgYv/UVvvnQ+tVQAAAAEYGPYhOVJIWFB3dxZYX6o6edy80JC/xn4dlM4RAymXvdvgPiP09huzW/0FGERWcW7mZW1AVD1g7LjK9bylazs8=</Password>
+    <Database>Modeware3</Database>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
   </Connection>
   <Reference Relative="..\..\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll">D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
@@ -18,7 +21,6 @@
   <Namespace>BenchmarkDotNet.Running</Namespace>
   <Namespace>Dapper</Namespace>
   <Namespace>Microsoft.EntityFrameworkCore</Namespace>
-  <Namespace>Sales.Models</Namespace>
 </Query>
 
 /*
@@ -88,7 +90,7 @@ namespace MyBenchmarks
 		// Connection string to your database
 		private const string connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
 
-		public DbSet<Order> Orders { get; set; }
+		//public DbSet<Order> Orders { get; set; }
 
 		// Configuring the DbContext with SQL Server provider
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
