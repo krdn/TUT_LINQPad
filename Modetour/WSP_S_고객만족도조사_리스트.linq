@@ -13,9 +13,9 @@
       <LegacyMFA>false</LegacyMFA>
     </DriverData>
   </Connection>
-  <Reference Relative="..\..\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll">D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <NuGetReference>Dapper</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore.SqlServer</NuGetReference>
   <Namespace>BenchmarkDotNet.Attributes</Namespace>
   <Namespace>BenchmarkDotNet.Configs</Namespace>
   <Namespace>BenchmarkDotNet.Running</Namespace>
@@ -82,15 +82,13 @@ SET QUOTED_IDENTIFIER OFF
 
 */
 
-namespace MyBenchmarks
+namespace ModetourBenchmarks
 {
 	// Custom DbContext
 	public class SalesContext : DbContext
 	{
 		// Connection string to your database
 		private const string connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
-
-		//public DbSet<Order> Orders { get; set; }
 
 		// Configuring the DbContext with SQL Server provider
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -99,28 +97,40 @@ namespace MyBenchmarks
 		}
 	}
 
+	/// <summary>
+	/// 	SP, Dapper, EntityFramework 세가지로 테스트 한다.
+	///     각각의 이름은 ModetourSP, ModetureDaper, ModetourEF
+	///     기준은 : SP를 기준으로 [Benchmark(Baseline = true)]
+	/// </summary>
 	[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 	[CategoriesColumn]
-	public class test01()
+	public class ModetourBechmark()
 	{
 		SalesContext db = new SalesContext();
 		private int _custkey = 10954;
 
-		//		[Benchmark(Baseline = true)]
-		//		public void test()
-		//		{
-		//			db = new SalesContext();
-		//
-		//			var Orders = db.Orders
-		//				.Where(o => o.CustKey == _custkey)
-		//				.OrderByDescending(o => o.OrderDate)
-		//				.Take(5)
-		//				.ToList();
-		//		}
 
+		[Benchmark(Baseline = true)]
+		public void ModetourSP()
+		{
+			var connectionString = db.Database.GetConnectionString();
+			//var connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+
+			var dictionary = new Dictionary<string, object>
+			{
+				{ "@설문지번호", 222 }
+			};
+			var parameters = new DynamicParameters(dictionary);
+
+			using (var connection = new SqlConnection(connectionString))
+			{
+				//var sql = @"SELECT top(5) * FROM Orders WHERE CustKey = @CustKey Order By OrderDate";
+				var product = connection.Query("WSP_S_고객만족도조사_리스트", parameters);
+			}
+		}
 
 		[Benchmark]
-		public void testDapper()
+		public void ModetourDapper()
 		{
 			var connectionString = db.Database.GetConnectionString();
 			//var connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
@@ -176,43 +186,23 @@ namespace MyBenchmarks
 		}
 
 
-		[Benchmark]
-		public void testDapperSP()
-		{
-			var connectionString = db.Database.GetConnectionString();
-			//var connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
-
-			var dictionary = new Dictionary<string, object>
-			{
-				{ "@설문지번호", 222 }
-			};
-			var parameters = new DynamicParameters(dictionary);
-
-			using (var connection = new SqlConnection(connectionString))
-			{
-				//var sql = @"SELECT top(5) * FROM Orders WHERE CustKey = @CustKey Order By OrderDate";
-				var product = connection.Query("WSP_S_고객만족도조사_리스트", parameters);
-			}
-		}
 
 		[Benchmark]
-		public void testDapperSP2()
+		public void ModetourEF()
 		{
-			//var connectionString = db.Database.GetConnectionString();
-			var connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+			db = new SalesContext();
+			
+			//var temp = db.
 
-			var dictionary = new Dictionary<string, object>
-			{
-				{ "@설문지번호", 222 }
-			};
-			var parameters = new DynamicParameters(dictionary);
-
-			using (var connection = new SqlConnection(connectionString))
-			{
-				//var sql = @"SELECT top(5) * FROM Orders WHERE CustKey = @CustKey Order By OrderDate";
-				var product = connection.Query("WSP_S_고객만족도조사_리스트", parameters);
-			}
+			//var Orders = db.Orders
+			//	.Where(o => o.CustKey == _custkey)
+			//	.OrderByDescending(o => o.OrderDate)
+			//	.Take(5)
+			//	.ToList();
 		}
+
+
+
 	}
 
 	public class Program
@@ -222,7 +212,7 @@ namespace MyBenchmarks
 			var config = ManualConfig.Create(DefaultConfig.Instance)
 							.WithOptions(ConfigOptions.DisableOptimizationsValidator);
 
-			var summary = BenchmarkRunner.Run<test01>(config);
+			var summary = BenchmarkRunner.Run<ModetourBechmark>(config);
 
 			//var summary = BenchmarkRunner.Run<test01>();
 		}
