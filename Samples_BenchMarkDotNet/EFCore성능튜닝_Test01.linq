@@ -1,18 +1,22 @@
 <Query Kind="Program">
   <Connection>
-    <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
+    <ID>55cb31a9-6a89-48ae-9629-dc335eb370eb</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
     <Server>localhost, 1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAlRQcAFV9W0WYo/HEzz39WwAAAAACAAAAAAAQZgAAAAEAACAAAAAbTYsPaZLOOUDj62W+mTLzE4UAkkK9M6uXAH1CdmwLhgAAAAAOgAAAAAIAACAAAAAi5CPDv1jYxJEhkK2Eo47Nv1fcqcSgNJ3BvG1ERdxRYBAAAAC9fmX/EinZ4Ei9ma+cmnbBQAAAAMqvjO4IbbFGQ4RiAPeK5HufJoqHnr0kxtkQJ2Uu3yDg9xxQe4TDBmzsS7v+OGKYTuY1lCdiH+4Oy8HLoLRtfUI=</Password>
     <Database>SalesSimple</Database>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
   </Connection>
-  <Reference Relative="..\..\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll">D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll</Reference>
+  <Reference Relative="..\..\TUT_EntityFrameworkSales\Sales\bin\Release\net7.0\Sales.dll">C:\03.Tutorials\TUT_EntityFrameworkSales\Sales\bin\Release\net7.0\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <NuGetReference>Dapper</NuGetReference>
+  <NuGetReference>Dapper.SqlBuilder</NuGetReference>
   <Namespace>BenchmarkDotNet.Attributes</Namespace>
   <Namespace>BenchmarkDotNet.Configs</Namespace>
   <Namespace>BenchmarkDotNet.Running</Namespace>
@@ -51,11 +55,19 @@ namespace MyBenchmarks
 		{
 			db = new SalesContext();
 
-			var Orders = db.Orders
+			var Orders1 = db.Orders
 				.Where(o => o.CustKey == _custkey)
 				.OrderByDescending(o => o.OrderDate)
 				.Take(5)
 				.ToList();
+
+			var temp = db.Orders
+				.Where(o => o.CustKey == _custkey)
+				.OrderByDescending(o => o.OrderDate)
+				.Take(5).ToQueryString();
+				
+			Debug.Print(temp);
+			
 		}
 
 		[Benchmark]
@@ -73,6 +85,12 @@ namespace MyBenchmarks
 			{
 				var sql = @"SELECT top(5) * FROM Orders WHERE CustKey = @CustKey Order By OrderDate";
 				var product = connection.Query (sql, parameters);
+
+				//var builder = new SqlBuilder();
+				//var template = builder.AddTemplate(sql);
+				//builder.Where("Age > @age", new { age = 18 });
+				//string sql3 = builder.AddTemplate(template.ToString);
+				//Console.WriteLine(sql);
 			}
 		}
 	}
