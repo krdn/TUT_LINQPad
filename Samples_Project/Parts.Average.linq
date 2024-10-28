@@ -48,6 +48,13 @@ public class BenchmarkTests
 		_dbContext.Database.EnsureCreated();
 
 		_averagePrice = _dbContext.Parts.Average(c => c.RetailPrice); // 평균값을 한 번만 계산
+
+
+		var sql = _query.ToQueryString();
+
+		Console.WriteLine("=========================================================");
+		Console.WriteLine(sql);
+		Console.WriteLine("=========================================================");
 	}
 
 	[GlobalCleanup]
@@ -71,6 +78,7 @@ public class BenchmarkTests
 						 Average = _dbContext.Parts.Average(c => c.RetailPrice),
 						 Diff = r.RetailPrice - _dbContext.Parts.Average(c => c.RetailPrice)
 					 };
+					 
 
 	}
 

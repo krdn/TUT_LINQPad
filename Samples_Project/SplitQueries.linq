@@ -38,28 +38,6 @@ using Microsoft.Extensions.Logging;
 // SQL Server 연결 문자열
 const string connectionString = "Data Source=localhost,1434;Initial Catalog=SalesSimple;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Sales;Encrypt=False;";
 
-// 엔티티 클래스 정의
-public class Order
-{
-	public int OrderId { get; set; }
-	public int CustKey { get; set; }
-	public DateTime OrderDate { get; set; }
-	public decimal TotalAmount { get; set; }
-
-	public ICollection<LineItem> LineItems { get; set; }
-}
-
-public class LineItem
-{
-	public int LineItemId { get; set; }
-	public int OrderId { get; set; }
-	public int ProductKey { get; set; }
-	public int Quantity { get; set; }
-	public decimal UnitPrice { get; set; }
-
-	public Order Order { get; set; }
-}
-
 // DbContext 정의
 public class Sales2Context : SalesContext
 {
@@ -75,6 +53,11 @@ public class Sales2Context : SalesContext
 
 		// 로깅 설정: 쿼리를 CapturedQueries 리스트에 저장
 		optionsBuilder
+			.UseSqlServer(sqlOptions => {
+				sqlOptions.CommandTimeout(30);
+				//sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+				
+			})
 			.LogTo(log => CapturedQueries.Add(log), LogLevel.Information)
 			.EnableSensitiveDataLogging(); // 매개변수 값을 로그에 포함
 	}
