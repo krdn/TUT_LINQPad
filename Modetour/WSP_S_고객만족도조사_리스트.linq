@@ -1,18 +1,16 @@
 <Query Kind="Program">
   <Connection>
-    <ID>67d23f56-2e29-49e2-b6c9-b894cafe52c8</ID>
+    <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>172.22.28.13, 1942</Server>
+    <Server>localhost, 1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAE0buaQVsAUedbdTc98/yCgAAAAACAAAAAAAQZgAAAAEAACAAAACoac+pmsPn970jdSiiDNXcmEq6ZYIh6dc3d9SyHnV7HQAAAAAOgAAAAAIAACAAAABuDawFrSg9JkJLuUDZTW/Qy1fNNZKlsl3M7jSChIKPwBAAAABi4nBNgwXgYv/UVvvnQ+tVQAAAAEYGPYhOVJIWFB3dxZYX6o6edy80JC/xn4dlM4RAymXvdvgPiP09huzW/0FGERWcW7mZW1AVD1g7LjK9bylazs8=</Password>
-    <Database>Modeware3</Database>
-    <DriverData>
-      <LegacyMFA>false</LegacyMFA>
-    </DriverData>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
+    <Database>ModeWare3</Database>
   </Connection>
+  <Reference Relative="..\..\..\01.Sources\Modetour_B2C_NewGen_Backend_8\src\User\ModetourB2C\bin\Release\net8.0\ModetourB2C.dll">D:\30.Modetour\01.Sources\Modetour_B2C_NewGen_Backend_8\src\User\ModetourB2C\bin\Release\net8.0\ModetourB2C.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <NuGetReference>Dapper</NuGetReference>
   <NuGetReference>Microsoft.EntityFrameworkCore.SqlServer</NuGetReference>
@@ -21,6 +19,7 @@
   <Namespace>BenchmarkDotNet.Running</Namespace>
   <Namespace>Dapper</Namespace>
   <Namespace>Microsoft.EntityFrameworkCore</Namespace>
+  <Namespace>ModetourB2C.Models</Namespace>
 </Query>
 
 /*
@@ -85,10 +84,12 @@ SET QUOTED_IDENTIFIER OFF
 namespace ModetourBenchmarks
 {
 	// Custom DbContext
-	public class SalesContext : DbContext
+	public class TestContext : DbContext // ModetourB2C.Models.ModeWare3Context
 	{
 		// Connection string to your database
-		private const string connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+		//private const string connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+		private const string connectionString = "Data Source=localhost, 1434;Initial Catalog=ModeWare3;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+
 
 		// Configuring the DbContext with SQL Server provider
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -106,15 +107,17 @@ namespace ModetourBenchmarks
 	[CategoriesColumn]
 	public class ModetourBechmark()
 	{
-		SalesContext db = new SalesContext();
+		TestContext dbContext = new TestContext(); // ModeWare3Context();
 		private int _custkey = 10954;
 
 
 		[Benchmark(Baseline = true)]
 		public void ModetourSP()
 		{
-			var connectionString = db.Database.GetConnectionString();
+			var connectionString2 = dbContext.Database.GetConnectionString();
 			//var connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+			string connectionString = "Data Source=localhost, 1434;Initial Catalog=ModeWare3;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+			
 
 			var dictionary = new Dictionary<string, object>
 			{
@@ -132,7 +135,8 @@ namespace ModetourBenchmarks
 		[Benchmark]
 		public void ModetourDapper()
 		{
-			var connectionString = db.Database.GetConnectionString();
+			//var connectionString = dbContext.Database.GetConnectionString();
+			string connectionString = "Data Source=localhost, 1434;Initial Catalog=ModeWare3;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
 			//var connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
 
 			var dictionary = new Dictionary<string, object>
@@ -190,8 +194,16 @@ namespace ModetourBenchmarks
 		[Benchmark]
 		public void ModetourEF()
 		{
-			db = new SalesContext();
-			
+			//var result =  dbContext.포상_설문관리s
+			//.Where(s => s.사용용도 == "20" && s.설문일련번호 == 222)
+			//.Select(s => new
+			//{
+			//	s.설문일련번호,
+			//	s.설문문항,
+			//	s.노출여부
+			//})
+			//.ToList();
+
 			//var temp = db.
 
 			//var Orders = db.Orders
