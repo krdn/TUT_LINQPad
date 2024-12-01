@@ -1,14 +1,17 @@
 <Query Kind="Statements">
   <Connection>
-    <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
+    <ID>3da83162-ac14-4a65-83e9-c583bb0b3b68</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>localhost, 1434</Server>
+    <Server>192.168.0.18,1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAALqYKck3+v0akEg0HeHio4AAAAAACAAAAAAAQZgAAAAEAACAAAACE51B/BY++Os8WipGj1haBE+X/gF+YTYgkxNfWnE/SNAAAAAAOgAAAAAIAACAAAAD8pJ00axnAaEJi7foDePf1bttDQ/5K5aUgLDtNy1/SSBAAAACidrBahnDpOnGC4VhsXF4yQAAAAOqmPK6nINvNPWFKxNdUJ25afxSVFZFn0QPVbDgrFz53Olbam2X+D6d//vromwOebyr5aSuvNITDFYTDkmLpf8Q=</Password>
     <Database>SalesSimple</Database>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
   </Connection>
   <Reference>D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Debug\net7.0\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>

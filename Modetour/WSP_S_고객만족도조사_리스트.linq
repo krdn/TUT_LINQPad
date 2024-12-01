@@ -1,14 +1,14 @@
 <Query Kind="Program">
   <Connection>
-    <ID>67d23f56-2e29-49e2-b6c9-b894cafe52c8</ID>
+    <ID>5ab80da3-0340-4803-8b21-038154e63b5f</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>172.22.28.13, 1942</Server>
+    <Server>krdn-g713rm,1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAE0buaQVsAUedbdTc98/yCgAAAAACAAAAAAAQZgAAAAEAACAAAACoac+pmsPn970jdSiiDNXcmEq6ZYIh6dc3d9SyHnV7HQAAAAAOgAAAAAIAACAAAABuDawFrSg9JkJLuUDZTW/Qy1fNNZKlsl3M7jSChIKPwBAAAABi4nBNgwXgYv/UVvvnQ+tVQAAAAEYGPYhOVJIWFB3dxZYX6o6edy80JC/xn4dlM4RAymXvdvgPiP09huzW/0FGERWcW7mZW1AVD1g7LjK9bylazs8=</Password>
-    <Database>Modeware3</Database>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAALqYKck3+v0akEg0HeHio4AAAAAACAAAAAAAQZgAAAAEAACAAAAD1qbEDLPYNe2sLtNBFxVmqDbAddj6v9Uxb8h8rwEGQdQAAAAAOgAAAAAIAACAAAAAM0/qQ/HhIJlDtfHaRBPpTraX/zACF/AfojL7GVzv02xAAAABwHB9TnO0LeXbdrVpWt5VoQAAAAAED7RB9X6sWrq3RfVim8VlfsURFqyhceD6ixBuChu91/mtPFoA2kjha3DgIResIAgnzYKm3g5ummZoD9LpIp3Q=</Password>
+    <Database>ModeWare3</Database>
     <DriverData>
       <LegacyMFA>false</LegacyMFA>
     </DriverData>
@@ -88,7 +88,7 @@ namespace ModetourBenchmarks
 	public class SalesContext : DbContext
 	{
 		// Connection string to your database
-		private const string connectionString = "Data Source=172.22.28.13, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=modetour^^1;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+		private const string connectionString = "Data Source=krdn-g713rm, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
 
 		// Configuring the DbContext with SQL Server provider
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
