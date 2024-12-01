@@ -1,19 +1,16 @@
 <Query Kind="Program">
   <Connection>
-    <ID>55cb31a9-6a89-48ae-9629-dc335eb370eb</ID>
+    <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
     <Server>localhost, 1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAlRQcAFV9W0WYo/HEzz39WwAAAAACAAAAAAAQZgAAAAEAACAAAAAbTYsPaZLOOUDj62W+mTLzE4UAkkK9M6uXAH1CdmwLhgAAAAAOgAAAAAIAACAAAAAi5CPDv1jYxJEhkK2Eo47Nv1fcqcSgNJ3BvG1ERdxRYBAAAAC9fmX/EinZ4Ei9ma+cmnbBQAAAAMqvjO4IbbFGQ4RiAPeK5HufJoqHnr0kxtkQJ2Uu3yDg9xxQe4TDBmzsS7v+OGKYTuY1lCdiH+4Oy8HLoLRtfUI=</Password>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
     <Database>SalesSimple</Database>
-    <DriverData>
-      <LegacyMFA>false</LegacyMFA>
-    </DriverData>
   </Connection>
-  <Reference Relative="..\..\TUT_EntityFrameworkSales\Sales\bin\Release\net7.0\Sales.dll">C:\03.Tutorials\TUT_EntityFrameworkSales\Sales\bin\Release\net7.0\Sales.dll</Reference>
+  <Reference Relative="..\..\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll">D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <NuGetReference>Dapper</NuGetReference>
   <NuGetReference>Dapper.SqlBuilder</NuGetReference>
@@ -26,7 +23,7 @@
 </Query>
 
 
-namespace MyBenchmarks
+namespace SalesSimpleBenchmarks
 {
 	// Custom DbContext
 	public class SalesContext : DbContext
@@ -45,35 +42,60 @@ namespace MyBenchmarks
 
 	[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 	[CategoriesColumn]
-	public class test01()
+	public class SaleBenchmark()
 	{
-		SalesContext db = new SalesContext();
+		SalesContext dbContext = new SalesContext();
 		private int _custkey = 10954;
 
 		[Benchmark(Baseline = true)]
-		public void test()
+		public void SaleSP_Dapper()
 		{
-			db = new SalesContext();
-
-			var Orders1 = db.Orders
-				.Where(o => o.CustKey == _custkey)
-				.OrderByDescending(o => o.OrderDate)
-				.Take(5)
-				.ToList();
-
-			var temp = db.Orders
-				.Where(o => o.CustKey == _custkey)
-				.OrderByDescending(o => o.OrderDate)
-				.Take(5).ToQueryString();
-				
-			Debug.Print(temp);
+			dbContext = new SalesContext();
 			
+			var connectionString2 = dbContext.Database.GetConnectionString();
+			
+			var dictionary = new Dictionary<string, object>
+			{
+				{ "@CustKey", _custkey }
+			};
+			var parameters = new DynamicParameters(dictionary);
+
+			using (var connection = new SqlConnection(connectionString2))
+			{
+				//var sql = @"SELECT top(5) * FROM Orders WHERE CustKey = @CustKey Order By OrderDate";
+				var product = connection.Query("OrderByCustKey", parameters);
+			}
+
+		}
+
+
+
+		[Benchmark]
+		public void SaleSP_EF_ExcuteSQL()
+		{
+			dbContext = new SalesContext();
+			
+			var employees = dbContext.Orders
+				.FromSqlRaw("SELECT * FROM Orders WHERE CustKey = {0}", _custkey)
+				.ToList();				
+
 		}
 
 		[Benchmark]
-		public void testDapper()
+		public void SaleSP_EF()
 		{
-			var connectionString = db.Database.GetConnectionString();
+			dbContext = new SalesContext();
+
+			var employees = dbContext.Orders
+				.FromSqlRaw("EXEC dbo.OrderByCustKey @CustKey = {0}", _custkey)
+				.ToList();
+
+		}
+
+		[Benchmark]
+		public void SaleDapper()
+		{
+			var connectionString = dbContext.Database.GetConnectionString();
 
 			var dictionary = new Dictionary<string, object>
 			{
@@ -93,6 +115,27 @@ namespace MyBenchmarks
 				//Console.WriteLine(sql);
 			}
 		}
+
+		[Benchmark]
+		public void SaleEF()
+		{
+			dbContext = new SalesContext();
+
+			var Orders1 = dbContext.Orders
+				.Where(o => o.CustKey == _custkey)
+				.OrderByDescending(o => o.OrderDate)
+				.Take(5)
+				.ToList();
+
+			//var temp = db.Orders
+			//	.Where(o => o.CustKey == _custkey)
+			//	.OrderByDescending(o => o.OrderDate)
+			//	.Take(5).ToQueryString();
+			//	
+			//Debug.Print(temp);
+
+		}
+
 	}
 
 	public class Program
@@ -102,7 +145,7 @@ namespace MyBenchmarks
 			var config = ManualConfig.Create(DefaultConfig.Instance)
 							.WithOptions(ConfigOptions.DisableOptimizationsValidator);
 
-			var summary = BenchmarkRunner.Run<test01>(config);
+			var summary = BenchmarkRunner.Run<SaleBenchmark>(config);
 			
 			//var summary = BenchmarkRunner.Run<test01>();
 		}
