@@ -21,6 +21,7 @@
   <Namespace>BenchmarkDotNet.Running</Namespace>
   <Namespace>Dapper</Namespace>
   <Namespace>Microsoft.EntityFrameworkCore</Namespace>
+  <Namespace>BenchmarkDotNet.Jobs</Namespace>
 </Query>
 
 /*
@@ -88,7 +89,7 @@ namespace ModetourBenchmarks
 	public class SalesContext : DbContext
 	{
 		// Connection string to your database
-		private const string connectionString = "Data Source=krdn-g713rm, 1942;Initial Catalog=ModeWare3;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
+		private const string connectionString = "Data Source=krdn-g713rm, 1434;Initial Catalog=ModeWare3;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Modetour;Encrypt=False;";
 
 		// Configuring the DbContext with SQL Server provider
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -104,8 +105,19 @@ namespace ModetourBenchmarks
 	/// </summary>
 	[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 	[CategoriesColumn]
+	[Config(typeof(Config))]
 	public class ModetourBechmark()
 	{
+		// BenchmarkDotNet 테스트 수 설정
+		public class Config : ManualConfig
+		{
+			public Config()
+			{
+				AddJob(Job.Default.WithIterationCount(5).WithLaunchCount(3));
+				AddJob(Job.MediumRun.WithIterationCount(3).WithWarmupCount(2));
+			}
+		}
+		
 		SalesContext db = new SalesContext();
 		private int _custkey = 10954;
 

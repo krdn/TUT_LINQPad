@@ -1,19 +1,24 @@
 <Query Kind="Program">
   <Connection>
-    <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
+    <ID>5ab80da3-0340-4803-8b21-038154e63b5f</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>localhost, 1434</Server>
+    <Server>krdn-g713rm,1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAALqYKck3+v0akEg0HeHio4AAAAAACAAAAAAAQZgAAAAEAACAAAAD1qbEDLPYNe2sLtNBFxVmqDbAddj6v9Uxb8h8rwEGQdQAAAAAOgAAAAAIAACAAAAAM0/qQ/HhIJlDtfHaRBPpTraX/zACF/AfojL7GVzv02xAAAABwHB9TnO0LeXbdrVpWt5VoQAAAAAED7RB9X6sWrq3RfVim8VlfsURFqyhceD6ixBuChu91/mtPFoA2kjha3DgIResIAgnzYKm3g5ummZoD9LpIp3Q=</Password>
     <Database>SalesSimple</Database>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
   </Connection>
-  <Reference Relative="..\..\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll">D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Release\net7.0\Sales.dll</Reference>
+  <Reference Relative="..\Sales.dll">C:\01.Modeware\TUT_LINQPad\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <NuGetReference>Dapper</NuGetReference>
   <NuGetReference>Dapper.SqlBuilder</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore.SqlServer</NuGetReference>
   <Namespace>BenchmarkDotNet.Attributes</Namespace>
   <Namespace>BenchmarkDotNet.Configs</Namespace>
   <Namespace>BenchmarkDotNet.Running</Namespace>
@@ -25,7 +30,7 @@
 
 
 // SQL Server 연결 문자열
-const string connectionString = "Data Source=localhost,1434;Initial Catalog=SalesSimple;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Sales;Encrypt=False;";
+const string connectionString = "Data Source=krdn-g713rm,1434;Initial Catalog=SalesSimple;User Id=sa;Password=krdn@Passw0rd;Pooling=True;MultipleActiveResultSets=False;Application Name=Sales;Encrypt=False;";
 
 [SimpleJob(launchCount: 1, warmupCount: 1, iterationCount: 10)]
 public class BenchmarkTests
@@ -50,11 +55,11 @@ public class BenchmarkTests
 		_averagePrice = _dbContext.Parts.Average(c => c.RetailPrice); // 평균값을 한 번만 계산
 
 
-		var sql = _query.ToQueryString();
+		//var sql = _query.ToQueryString();
 
-		Console.WriteLine("=========================================================");
-		Console.WriteLine(sql);
-		Console.WriteLine("=========================================================");
+		//Console.WriteLine("=========================================================");
+		//Console.WriteLine(sql);
+		//Console.WriteLine("=========================================================");
 	}
 
 	[GlobalCleanup]

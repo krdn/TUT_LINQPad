@@ -1,4 +1,18 @@
 <Query Kind="Program">
+  <Connection>
+    <ID>5ab80da3-0340-4803-8b21-038154e63b5f</ID>
+    <NamingServiceVersion>2</NamingServiceVersion>
+    <Persist>true</Persist>
+    <Server>krdn-g713rm,1434</Server>
+    <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
+    <SqlSecurity>true</SqlSecurity>
+    <UserName>sa</UserName>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAALqYKck3+v0akEg0HeHio4AAAAAACAAAAAAAQZgAAAAEAACAAAAD1qbEDLPYNe2sLtNBFxVmqDbAddj6v9Uxb8h8rwEGQdQAAAAAOgAAAAAIAACAAAAAM0/qQ/HhIJlDtfHaRBPpTraX/zACF/AfojL7GVzv02xAAAABwHB9TnO0LeXbdrVpWt5VoQAAAAAED7RB9X6sWrq3RfVim8VlfsURFqyhceD6ixBuChu91/mtPFoA2kjha3DgIResIAgnzYKm3g5ummZoD9LpIp3Q=</Password>
+    <Database>SalesSimple</Database>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
+  </Connection>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <Namespace>BenchmarkDotNet.Attributes</Namespace>
   <Namespace>BenchmarkDotNet.Configs</Namespace>

@@ -2,7 +2,6 @@
   <Connection>
     <ID>bbcf5935-9806-400e-a7e9-d7b517411e01</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
-    <Persist>true</Persist>
     <Server>localhost, 1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
@@ -10,9 +9,13 @@
     <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAieqJCoaNHE2RMbKFalFqPAAAAAACAAAAAAAQZgAAAAEAACAAAAAKqmk+VTP4YzwbLJaqwh/pfR4iP2ztUIqaDCPZIDSAXAAAAAAOgAAAAAIAACAAAABmgK8osdT3JhfhSwg1FetjqNDSPYhEFDKBGwGhzv35nxAAAAAdH/NpgG73qmgMtGmN4NjaQAAAAPUeID2k5/G2ZFEDOfzJs15B//Bm/5aEB2+6eJINHp6PpP9+WiB0RHpAvPy8t1mZQ2O5Sqkd+NxGj8N9pO1omrc=</Password>
     <Database>SalesSimple</Database>
   </Connection>
-  <Reference Relative="..\..\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Debug\net7.0\Sales.dll">D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Debug\net7.0\Sales.dll</Reference>
+  <Reference Relative="..\Sales.dll">C:\01.Modeware\TUT_LINQPad\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
   <NuGetReference>Dapper</NuGetReference>
+  <NuGetReference>Dapper.SqlBuilder</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore.Proxies</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore.SqlServer</NuGetReference>
   <Namespace>BenchmarkDotNet.Attributes</Namespace>
   <Namespace>BenchmarkDotNet.Configs</Namespace>
   <Namespace>BenchmarkDotNet.Running</Namespace>

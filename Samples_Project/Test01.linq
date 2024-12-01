@@ -1,24 +1,25 @@
 <Query Kind="Statements">
   <Connection>
-    <ID>3da83162-ac14-4a65-83e9-c583bb0b3b68</ID>
+    <ID>5ab80da3-0340-4803-8b21-038154e63b5f</ID>
     <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>192.168.0.18,1434</Server>
+    <Server>krdn-g713rm,1434</Server>
     <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
-    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAALqYKck3+v0akEg0HeHio4AAAAAACAAAAAAAQZgAAAAEAACAAAACE51B/BY++Os8WipGj1haBE+X/gF+YTYgkxNfWnE/SNAAAAAAOgAAAAAIAACAAAAD8pJ00axnAaEJi7foDePf1bttDQ/5K5aUgLDtNy1/SSBAAAACidrBahnDpOnGC4VhsXF4yQAAAAOqmPK6nINvNPWFKxNdUJ25afxSVFZFn0QPVbDgrFz53Olbam2X+D6d//vromwOebyr5aSuvNITDFYTDkmLpf8Q=</Password>
+    <Password>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAALqYKck3+v0akEg0HeHio4AAAAAACAAAAAAAQZgAAAAEAACAAAAD1qbEDLPYNe2sLtNBFxVmqDbAddj6v9Uxb8h8rwEGQdQAAAAAOgAAAAAIAACAAAAAM0/qQ/HhIJlDtfHaRBPpTraX/zACF/AfojL7GVzv02xAAAABwHB9TnO0LeXbdrVpWt5VoQAAAAAED7RB9X6sWrq3RfVim8VlfsURFqyhceD6ixBuChu91/mtPFoA2kjha3DgIResIAgnzYKm3g5ummZoD9LpIp3Q=</Password>
     <Database>SalesSimple</Database>
     <DriverData>
       <LegacyMFA>false</LegacyMFA>
     </DriverData>
   </Connection>
-  <Reference>D:\30.Modetour\03.Tutorials\EFCoreDBTuningforSQLServer-Demos\Sales\Sales\bin\Debug\net7.0\Sales.dll</Reference>
+  <Reference Relative="..\Sales.dll">C:\01.Modeware\TUT_LINQPad\Sales.dll</Reference>
   <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
-  <Namespace>Microsoft.EntityFrameworkCore</Namespace>
-  <Namespace>Sales.Models</Namespace>
+  <NuGetReference>Microsoft.EntityFrameworkCore</NuGetReference>
+  <NuGetReference>Microsoft.EntityFrameworkCore.SqlServer</NuGetReference>
   <Namespace>BenchmarkDotNet.Attributes</Namespace>
   <Namespace>BenchmarkDotNet.Running</Namespace>
+  <Namespace>Sales.Models</Namespace>
 </Query>
 
 
